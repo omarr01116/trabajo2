@@ -131,38 +131,52 @@
     }
   };
 
-  // 🔹 Leer parámetro de URL (?curso=...)
-  const params = new URLSearchParams(window.location.search);
-  const cursoId = params.get("curso");
+  // 🔹 Normalización de claves para que funcione con alias
+const alias = {
+  "arquitectura": "Arquitectura de Software",
+  "Arquitectura de Software": "Arquitectura de Software",
+  "ml": "Machine Learning",
+  "Machine Learning": "Machine Learning",
+  "ingles": "Inglés",
+  "Inglés": "Inglés"
+};
 
-  if (cursoId && cursos[cursoId]) {
-    const curso = cursos[cursoId];
-    document.getElementById("curso-title").textContent = curso.nombre;
-    document.getElementById("curso-subtitle").textContent = `Material del curso: ${curso.nombre}`;
+// Leer parámetro de URL (?curso=...)
+const params = new URLSearchParams(window.location.search);
+let cursoId = params.get("curso");
 
-    const container = document.getElementById("semanas-container");
+// Normalizar clave
+if (cursoId && alias[cursoId]) {
+  cursoId = alias[cursoId];
+  const curso = cursos[cursoId];
 
-    curso.semanas.forEach((semana, index) => {
-      const numSemana = index + 1;
-      const card = document.createElement("div");
-      card.className = "col-md-4 col-sm-6 text-center animate-box";
-      card.innerHTML = `
-        <div class="feature-center">
-          <span class="icon"><i class="icon-book"></i></span>
-          <h3>${semana.titulo}</h3>
-          <p>${semana.descripcion}</p>
-          <p>
-            <a href="semana.html?curso=${encodeURIComponent(curso.nombre)}&semana=${numSemana}" class="btn btn-default">
-              Ver Material
-            </a>
-          </p>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  } else {
-    document.getElementById("curso-title").textContent = "Curso no encontrado";
-  }
+  document.getElementById("curso-title").textContent = curso.nombre;
+  document.getElementById("curso-subtitle").textContent = `Material del curso: ${curso.nombre}`;
+
+  const container = document.getElementById("semanas-container");
+
+  curso.semanas.forEach((semana, index) => {
+    const numSemana = index + 1;
+    const card = document.createElement("div");
+    card.className = "col-md-4 col-sm-6 text-center animate-box";
+    card.innerHTML = `
+      <div class="feature-center">
+        <span class="icon"><i class="icon-book"></i></span>
+        <h3>${semana.titulo}</h3>
+        <p>${semana.descripcion}</p>
+        <p>
+          <a href="semana.html?curso=${encodeURIComponent(curso.nombre)}&semana=${numSemana}" class="btn btn-default">
+            Ver Material
+          </a>
+        </p>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+} else {
+  document.getElementById("curso-title").textContent = "Curso no encontrado";
+}
+
 
   // 🔹 Loader
   window.addEventListener('load', function () {
