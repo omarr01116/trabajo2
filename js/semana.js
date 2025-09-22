@@ -31,7 +31,7 @@ const listaArchivos = document.getElementById("listaArchivos");
 const hero = document.querySelector("#fh5co-header .container .row .col-md-12");
 if (hero) {
   const volverCursoBtn = document.createElement("a");
-  volverCursoBtn.href = `curso.html?curso=${encodeURIComponent(curso.toLowerCase().replace(/\s+/g, ""))}`;
+  volverCursoBtn.href = `curso.html?curso=${encodeURIComponent(curso)}`;
   volverCursoBtn.className = "btn btn-transparent m-2";
   volverCursoBtn.textContent = `⬅️ Volver a ${curso}`;
   hero.appendChild(volverCursoBtn);
