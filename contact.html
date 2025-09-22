@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Contacto - Portafolio Personal</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Página de contacto - Portafolio personal" />
+	<meta name="author" content="Tu Nombre" />
+
+	<!-- Fuentes -->
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="css/icomoon.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/flexslider.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+
+	<style>
+		/* Estilos de alerta */
+		.alerta {
+			display: none;
+			margin-top: 15px;
+			padding: 12px;
+			border-radius: 6px;
+			font-weight: bold;
+			text-align: center;
+		}
+		.alerta.exito {
+			background: #d4edda;
+			color: #155724;
+			border: 1px solid #c3e6cb;
+		}
+		.alerta.error {
+			background: #f8d7da;
+			color: #721c24;
+			border: 1px solid #f5c6cb;
+		}
+	</style>
+</head>
+<body>
+	
+<div class="fh5co-loader"></div>
+
+<div id="page">
+	<!-- Navbar -->
+	<nav class="fh5co-nav" role="navigation">
+		<div class="top-menu">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-2">
+						<div id="fh5co-logo">
+							<a href="index.html">
+								<img src="images/logoUPLA.png" alt="Logo Universidad">
+							</a>
+						</div>
+					</div>
+					<div class="col-xs-10 text-right menu-1">
+						<ul>
+							<li><a href="index.html">Inicio</a></li>
+							<li><a href="trayectoria.html">Trayectoria</a></li>
+							<li class="has-dropdown">
+								<a href="portafolio.html">Portafolio</a>
+								<ul class="dropdown">
+									<li><a href="#">Arquitectura de Software</a></li>
+									<li><a href="#">Machine Learning</a></li>
+									<li><a href="#">Inglés</a></li>
+								</ul>
+							</li>
+							<li><a href="sobreMi.html">Sobre mí</a></li>
+							<li class="active"><a href="contact.html">Contacto</a></li>
+							<li class="btn-cta"><a href="login.html"><span>Login</span></a></li>
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</nav>
+
+	<!-- Contacto -->
+	<div id="fh5co-contact">
+		<div class="container">
+			<div class="row animate-box">
+				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+					<h2>Contacto</h2>
+					<p>Si deseas comunicarte conmigo, puedes escribirme a través del siguiente formulario.</p>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+				<div class="row">
+					<div class="col-md-3 col-md-push-1 animate-box">
+						<h3>Información de contacto</h3>
+						<ul class="contact-info">
+							<li><i class="icon-location"></i>Huancayo, Junín - Perú</li>
+							<li><i class="icon-old-phone"></i>+51 999 111 222</li>
+							<li><i class="icon-mail22"></i><a href="mailto:r01116d@ms.upla.edu.pe">r01116d@ms.upla.edu.pe</a></li>
+							<li><i class="icon-globe2"></i><a href="https://omarr01116.github.io/trabajo2/index.html">Mi página web</a></li>
+						</ul>
+					</div>
+					<div class="col-md-7 col-md-push-1 animate-box">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="text" id="nombre" class="form-control" placeholder="Nombre">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<input type="email" id="correo" class="form-control" placeholder="Correo electrónico">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<textarea id="mensaje" class="form-control" cols="30" rows="7" placeholder="Mensaje"></textarea>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="button" value="Enviar mensaje" class="btn btn-primary" onclick="simularEnvio()">
+								</div>
+								<!-- Div para mostrar la alerta -->
+								<div id="alerta" class="alerta"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+	<!-- Footer -->
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container text-center">
+			<p>
+				<small class="block">&copy; 2025 - Portafolio personal. Todos los derechos reservados.</small>
+			</p>
+		</div>
+	</footer>
+</div>
+
+<div class="gototop js-top">
+	<a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
+</div>
+
+<!-- Scripts -->
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.easing.1.3.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.waypoints.min.js"></script>
+<script src="js/jquery.flexslider-min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/magnific-popup-options.js"></script>
+<script src="js/main.js"></script>
+
+<!-- Script validación -->
+<script>
+	function simularEnvio() {
+		const nombre = document.getElementById("nombre").value.trim();
+		const correo = document.getElementById("correo").value.trim();
+		const mensaje = document.getElementById("mensaje").value.trim();
+		const alerta = document.getElementById("alerta");
+
+		if (nombre === "" || correo === "" || mensaje === "") {
+			alerta.textContent = "❌ Por favor, completa todos los campos.";
+			alerta.className = "alerta error";
+			alerta.style.display = "block";
+		} else {
+			alerta.textContent = "✅ Mensaje enviado exitosamente. Gracias por contactarme.";
+			alerta.className = "alerta exito";
+			alerta.style.display = "block";
+
+			// limpiar campos
+			document.getElementById("nombre").value = "";
+			document.getElementById("correo").value = "";
+			document.getElementById("mensaje").value = "";
+		}
+	}
+</script>
+
+</body>
+</html>
