@@ -30,8 +30,9 @@ form.addEventListener("submit", async (e) => {
   estado.textContent = "⏳ Subiendo...";
   estado.style.color = "orange";
 
-  // ✅ Guardar en carpeta curso/semana
-  const filePath = `${curso}/${semana}/${Date.now()}_${archivo.name}`;
+  // ✅ Guardar en carpeta curso/semana con timestamp
+  const timestamp = Date.now();
+  const filePath = `${curso}/${semana}/${timestamp}_${archivo.name}`;
 
   const { error } = await supabase.storage
     .from("archivos")
@@ -71,11 +72,17 @@ async function cargarArchivos(curso, semana) {
   }
 
   for (const file of data) {
+    // 📌 Obtener URL pública
     const { data: urlData } = supabase.storage
       .from("archivos")
       .getPublicUrl(`${curso}/${semana}/${file.name}`);
 
-    const fecha = new Date(file.created_at || Date.now()).toLocaleString();
+    // 📌 Extraer fecha del timestamp en el nombre del archivo
+    let fecha = "Desconocida";
+    const parts = file.name.split("_");
+    if (!isNaN(parts[0])) {
+      fecha = new Date(parseInt(parts[0])).toLocaleString();
+    }
 
     const row = document.createElement("tr");
     row.innerHTML = `
