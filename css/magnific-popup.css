@@ -19,7 +19,9 @@
   z-index: 1043;
   position: fixed;
   outline: none !important;
-  -webkit-backface-visibility: hidden; }
+  backface-visibility: hidden; /* estándar, reemplaza el prefijo */
+}
+
 
 .mfp-container {
   text-align: center;
@@ -103,18 +105,20 @@
 .mfp-s-error .mfp-content {
   display: none; }
 
-button.mfp-close, button.mfp-arrow {
+button.mfp-close,
+button.mfp-arrow {
   overflow: visible;
   cursor: pointer;
   background: transparent;
   border: 0;
-  -webkit-appearance: none;
+  appearance: none;   /* estándar, reemplaza -webkit-appearance */
   display: block;
   outline: none;
   padding: 0;
   z-index: 1046;
-  -webkit-box-shadow: none;
-  box-shadow: none; }
+  box-shadow: none;   /* ya no necesitas -webkit-box-shadow */
+}
+
 button::-moz-focus-inner {
   padding: 0;
   border: 0; }

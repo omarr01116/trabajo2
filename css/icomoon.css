@@ -10,19 +10,16 @@
 }
 
 [class^="icon-"], [class*=" icon-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icomoon' !important;
-    speak: none;
+    font-family: 'icomoon' !important; /* asegura los íconos */
     font-style: normal;
     font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
     line-height: 1;
 
-    /* Better Font Rendering =========== */
+    /* Renderizado de fuentes */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
 
 .icon-mobile:before {
     content: "\e000";

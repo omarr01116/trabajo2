@@ -150,12 +150,13 @@ select {
 }
 
 button,
-html input[type="button"],
+input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-  -webkit-appearance: button;
+  appearance: button;
   cursor: pointer;
 }
+
 
 button[disabled],
 html input[disabled] {
@@ -184,9 +185,10 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="search"] {
-  -webkit-appearance: textfield;
+  appearance: textfield;
   box-sizing: content-box;
 }
+
 
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
@@ -2113,8 +2115,9 @@ textarea.form-control {
 }
 
 input[type="search"] {
-  -webkit-appearance: none;
+  appearance: none;
 }
+
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   input[type="date"].form-control,
@@ -5320,8 +5323,9 @@ button.close {
   cursor: pointer;
   background: transparent;
   border: 0;
-  -webkit-appearance: none;
+  appearance: none;
 }
+
 
 .modal-open {
   overflow: hidden;

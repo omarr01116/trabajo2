@@ -198,18 +198,11 @@ h1, h2, h3, h4, h5, h6, figure {
 .fh5co-nav ul li.btn-cta a span {
   background: #dd356e;
   padding: 4px 10px;
-  display: -moz-inline-stack;
-  display: inline-block;
-  zoom: 1;
-  *display: inline;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
-  -webkit-border-radius: 100px;
-  -moz-border-radius: 100px;
-  -ms-border-radius: 100px;
-  border-radius: 100px;
+  display: inline-block;   /* suficiente hoy en día */
+  transition: 0.3s;        /* ya no necesitas prefijos */
+  border-radius: 100px;    /* ya no necesitas prefijos */
 }
+
 .fh5co-nav ul li.btn-cta a:hover span {
   -webkit-box-shadow: 0px 14px 20px -9px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 14px 20px -9px rgba(0, 0, 0, 0.75);
@@ -651,20 +644,16 @@ h1, h2, h3, h4, h5, h6, figure {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: -moz-inline-stack;
-  display: inline-block;
-  zoom: 1;
-  *display: inline;
+  display: inline-block; /* suficiente hoy en día */
+  vertical-align: middle; /* asegura buena alineación */
 }
+
 .fh5co-social-icons li a {
-  display: -moz-inline-stack;
   display: inline-block;
-  zoom: 1;
-  *display: inline;
   color: #DD356E;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0 10px; /* simplificado */
 }
+
 .fh5co-social-icons li a i {
   font-size: 20px;
 }
@@ -850,10 +839,10 @@ h1, h2, h3, h4, h5, h6, figure {
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.06);
 }
 .fh5co-portfolio > a:hover {
-  webkit-box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.13);
-  -moz-box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.13);
+  -webkit-box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.13); /* Safari antiguo */
   box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.13);
 }
+
 .fh5co-portfolio .portfolio-entry {
   width: 100%;
   float: left;
@@ -1108,24 +1097,22 @@ input[type="text"] {
 }
 #fh5co-offcanvas ul li.offcanvas-has-dropdown > a:after {
   position: absolute;
-  right: 0px;
+  right: 0;
   font-family: 'icomoon';
-  speak: none;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  /* Better Font Rendering =========== */
+  /* Mejor renderizado de fuentes */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\ebfc";
   font-size: 20px;
   color: rgba(255, 255, 255, 0.2);
-  -webkit-transition: 0.5s;
-  -o-transition: 0.5s;
   transition: 0.5s;
 }
+
 #fh5co-offcanvas ul li.offcanvas-has-dropdown.active a:after {
   -webkit-transform: rotate(-180deg);
   -moz-transform: rotate(-180deg);
@@ -1494,7 +1481,7 @@ input[type="text"] {
   display: block;            /* Elimina espacio adicional debajo de la imagen */
   margin: 0 auto;            /* Elimina margen innecesario */
   position: absolute;        /* Permite mover el logo sin afectar el flujo del documento */
-  top: -10px;                /* Mueve el logo hacia arriba */
+  top: -5px;                /* Mueve el logo hacia arriba */
 }
 
 /*# sourceMappingURL=style.css.map */
