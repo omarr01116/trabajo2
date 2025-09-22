@@ -28,14 +28,21 @@ document.getElementById("tituloSemana").textContent = `${curso} - Semana ${seman
 const listaArchivos = document.getElementById("listaArchivos");
 
 // 🔙 Insertar botón dinámico para volver al curso
+function normalizarCurso(nombre) {
+  return nombre.toLowerCase()
+               .replace(/\s+/g, "")   // quita espacios
+               .replace(/[^\w]/g, ""); // quita acentos/símbolos
+}
+
 const hero = document.querySelector("#fh5co-header .container .row .col-md-12");
 if (hero) {
   const volverCursoBtn = document.createElement("a");
-  volverCursoBtn.href = `curso.html?curso=${encodeURIComponent(curso)}`;
+  volverCursoBtn.href = `curso.html?curso=${normalizarCurso(curso)}`;
   volverCursoBtn.className = "btn btn-transparent m-2";
   volverCursoBtn.textContent = `⬅️ Volver a ${curso}`;
   hero.appendChild(volverCursoBtn);
 }
+
 
 
 // 📂 Verificar conexión a Supabase
