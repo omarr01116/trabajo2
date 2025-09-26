@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// 🔑 Configuración Supabase (sin cambios)
+// 🔑 Configuración Supabase
 const SUPABASE_URL = "https://bazwwhwjruwgyfomyttp.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhend3aHdqcnV3Z3lmb215dHRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNjA1NTAsImV4cCI6MjA3MzczNjU1MH0.RzpCKpYV-GqNIhTklsQtRqyiPCGGmVlUs7q_BeBHxUo";
@@ -18,11 +18,6 @@ semanaNumero = semanaNumero.trim();
 // ✅ Carpeta real en Supabase
 const carpeta = `${curso}/Semana ${semanaNumero}`;
 
-// Depuración
-console.log("🎯 Curso obtenido:", curso);
-console.log("🎯 Semana obtenida:", semanaNumero);
-console.log("🎯 Carpeta a consultar en Supabase:", carpeta);
-
 // Cambiar el título
 const tituloEl = document.getElementById("tituloSemana");
 if (tituloEl) tituloEl.textContent = `${curso} - Semana ${semanaNumero}`;
@@ -32,13 +27,12 @@ const listaArchivos =
   document.getElementById("listaArchivos") || document.getElementById("archivos");
 
 if (!listaArchivos) {
-  console.error('No se encontró el contenedor de archivos. Añade id="listaArchivos" o id="archivos" al contenedor.');
+  console.error(
+    '⚠️ No se encontró el contenedor de archivos. Añade id="listaArchivos" o id="archivos".'
+  );
 }
 
 // 🔙 Botón "Volver a [curso]"
-function normalizarCurso(nombre) {
-  return nombre.toLowerCase().replace(/\s+/g, "").replace(/[^\w]/g, "");
-}
 const hero = document.querySelector("#fh5co-header .container .row .col-md-12");
 if (hero) {
   const volverCursoBtn = document.createElement("a");
@@ -53,38 +47,47 @@ function getViewUrl(url, filename) {
   const ext = (filename || url).split(".").pop().toLowerCase();
   if (["pdf", "jpg", "jpeg", "png", "gif", "webp"].includes(ext)) return url;
   if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext)) {
-    return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+    return `https://docs.google.com/gview?url=${encodeURIComponent(
+      url
+    )}&embedded=true`;
   }
   return url;
 }
 
-// 📂 Verificar conexión (igual)
+// 📂 Verificar conexión
 async function verificarConexion() {
   try {
-    const { data, error } = await supabase.storage.from("archivos").list(carpeta, { limit: 1 });
+    const { data, error } = await supabase.storage
+      .from("archivos")
+      .list(carpeta, { limit: 1 });
+
     if (error) {
       console.error("❌ Error en la conexión con Supabase:", error.message);
       return;
     }
-    console.log("✅ Conexión exitosa a Supabase. Archivos encontrados:", data);
+    console.log("✅ Conexión exitosa. Archivos encontrados:", data);
   } catch (error) {
     console.error("❌ Error desconocido al verificar conexión:", error);
   }
 }
 
-// 📂 Listar archivos (igual)
+// 📂 Listar archivos
 async function listarArchivos(path = carpeta) {
   console.log(`🌍 Listando archivos en: ${path}`);
-  const { data, error } = await supabase.storage.from("archivos").list(path, { limit: 100 });
+  const { data, error } = await supabase.storage
+    .from("archivos")
+    .list(path, { limit: 100 });
+
   if (error) {
     console.error("❌ Error al listar archivos:", error.message);
     return [];
   }
+
   console.log("✅ Archivos encontrados:", data);
   return data.filter((item) => !item.metadata?.is_directory);
 }
 
-// 📂 Cargar archivos y mostrarlos (reemplaza creación por DOM para añadir listeners)
+// 📂 Cargar archivos
 async function cargarArchivos() {
   if (!listaArchivos) return;
 
@@ -107,17 +110,21 @@ async function cargarArchivos() {
   }
 
   for (const file of archivos) {
-    const { data: urlData } = supabase.storage.from("archivos").getPublicUrl(`${carpeta}/${file.name}`);
+    const { data: urlData } = supabase.storage
+      .from("archivos")
+      .getPublicUrl(`${carpeta}/${file.name}`);
 
     if (!urlData || !urlData.publicUrl) {
-      console.error("❌ Error al obtener URL pública para el archivo:", file.name);
+      console.error("❌ No se pudo obtener URL pública para:", file.name);
       continue;
     }
 
     const publicUrl = urlData.publicUrl;
-    const descargarUrl = `${publicUrl}?download=${encodeURIComponent(file.name)}`;
+    const descargarUrl = `${publicUrl}?download=${encodeURIComponent(
+      file.name
+    )}`;
 
-    // preview pequeño en la card
+    // Determinar ícono/preview
     const extension = file.name.split(".").pop().toLowerCase();
     let previewHTML = "";
     if (["jpg", "jpeg", "png", "gif", "webp"].includes(extension)) {
@@ -134,31 +141,31 @@ async function cargarArchivos() {
       previewHTML = `<img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" class="preview-icon" alt="Archivo">`;
     }
 
-    // Crear elementos por DOM (evita problemas con comillas/escapes)
+    // Crear card
     const col = document.createElement("div");
     col.className = "col-md-4 col-sm-6";
 
     const card = document.createElement("div");
     card.className = "card p-3 text-center shadow-sm h-100";
 
-    // cuerpo HTML (preview + titulo)
     card.innerHTML = `
       ${previewHTML}
       <h6 class="card-title mt-2 text-truncate" title="${file.name}">${file.name}</h6>
       <div class="d-grid gap-2 mt-3"></div>
     `;
 
-    // botones
     const actions = card.querySelector(".d-grid");
 
+    // Botón vista previa
     const viewBtn = document.createElement("button");
     viewBtn.type = "button";
     viewBtn.className = "btn btn-primary btn-sm";
     viewBtn.textContent = "👁 Vista previa";
-    // guardamos datos en el closure / dataset
-    viewBtn.dataset.fileUrl = publicUrl;
-    viewBtn.dataset.filename = file.name;
+    viewBtn.addEventListener("click", () =>
+      abrirPreview(publicUrl, file.name)
+    );
 
+    // Botón descarga
     const dlLink = document.createElement("a");
     dlLink.href = descargarUrl;
     dlLink.className = "btn btn-success btn-sm";
@@ -170,34 +177,31 @@ async function cargarArchivos() {
 
     col.appendChild(card);
     listaArchivos.appendChild(col);
-
-    // listener individual (más fiable que onclick inline)
-    viewBtn.addEventListener("click", () => abrirPreview(publicUrl, file.name));
   }
 }
 
-// 📌 Abrir modal con vista previa (usa getViewUrl internamente)
+// 📌 Abrir modal con vista previa
 function abrirPreview(fileUrl, filename) {
   const previewFrame = document.getElementById("previewFrame");
   const downloadBtn = document.getElementById("downloadBtn");
   const modalEl = document.getElementById("previewModal");
 
   if (!previewFrame || !downloadBtn || !modalEl) {
-    console.error("Elementos del modal no encontrados (previewFrame, downloadBtn o previewModal).");
+    console.error(
+      "⚠️ Elementos del modal no encontrados (previewFrame, downloadBtn o previewModal)."
+    );
     return;
   }
 
   const verUrl = getViewUrl(fileUrl, filename);
   previewFrame.src = verUrl;
-  // botón descarga apunta al archivo original
+
   downloadBtn.href = `${fileUrl}?download=${encodeURIComponent(filename)}`;
   downloadBtn.setAttribute("download", filename);
 
-  // abrir modal (Bootstrap)
   const modal = new bootstrap.Modal(modalEl);
   modal.show();
 
-  // limpiar iframe al cerrar para liberar memoria
   modalEl.addEventListener(
     "hidden.bs.modal",
     () => {
