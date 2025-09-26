@@ -132,7 +132,7 @@ async function cargarArchivos() {
     console.log(`📂 Archivo: ${file.name}`);
     console.log(`🔗 URL pública generada: ${urlData.publicUrl}`);
 
-    // Detectar extensión para el preview
+    // Detectar extensión para el preview pequeño
     const extension = file.name.split('.').pop().toLowerCase();
     let previewHTML = "";
 
@@ -158,7 +158,7 @@ async function cargarArchivos() {
         ${previewHTML}
         <h6 class="card-title mt-2 text-truncate" title="${file.name}">${file.name}</h6>
         <div class="d-grid gap-2 mt-3">
-          <a href="${verUrl}" target="_blank" class="btn btn-primary btn-sm">👁 Ver</a>
+          <button onclick="abrirPreview('${urlData.publicUrl}', '${file.name}')" class="btn btn-primary btn-sm">👁 Vista previa</button>
           <a href="${descargarUrl}" class="btn btn-success btn-sm">⬇ Descargar</a>
         </div>
       </div>
@@ -166,6 +166,20 @@ async function cargarArchivos() {
 
     listaArchivos.appendChild(col);
   }
+}
+
+// 📌 Abrir modal con vista previa
+function abrirPreview(fileUrl, filename) {
+  const previewFrame = document.getElementById("previewFrame");
+  const downloadBtn = document.getElementById("downloadBtn");
+
+  const verUrl = getViewUrl(fileUrl, filename);
+
+  previewFrame.src = verUrl;
+  downloadBtn.href = `${fileUrl}?download=${filename}`;
+
+  const modal = new bootstrap.Modal(document.getElementById("previewModal"));
+  modal.show();
 }
 
 // 🚀 Ejecutar
