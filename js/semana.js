@@ -43,7 +43,23 @@ if (hero) {
   hero.appendChild(volverCursoBtn);
 }
 
+// 🔍 Función para generar URL de vista
+function getViewUrl(url, filename) {
+  const ext = filename.split(".").pop().toLowerCase();
 
+  // Archivos que el navegador soporta directo
+  if (["pdf", "jpg", "jpeg", "png", "gif", "webp"].includes(ext)) {
+    return url;
+  }
+
+  // Archivos de Office → usar Google Docs Viewer
+  if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext)) {
+    return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+  }
+
+  // Por defecto, solo devuelve la URL (se descargará)
+  return url;
+}
 
 // 📂 Verificar conexión a Supabase
 async function verificarConexion() {
@@ -109,24 +125,27 @@ async function cargarArchivos() {
       continue;
     }
 
-    const verUrl = urlData.publicUrl;
-    const descargarUrl = `${verUrl}?download=${file.name}`;
+    // 👁 Usar la nueva función para decidir cómo se abre
+    const verUrl = getViewUrl(urlData.publicUrl, file.name);
+    const descargarUrl = `${urlData.publicUrl}?download=${file.name}`;
 
     console.log(`📂 Archivo: ${file.name}`);
-    console.log(`🔗 URL pública generada: ${verUrl}`);
+    console.log(`🔗 URL pública generada: ${urlData.publicUrl}`);
 
-    // Detectar extensión
+    // Detectar extensión para el preview
     const extension = file.name.split('.').pop().toLowerCase();
     let previewHTML = "";
 
     if (["jpg", "jpeg", "png", "gif", "webp"].includes(extension)) {
-      previewHTML = `<img src="${verUrl}" class="preview-img" alt="${file.name}">`;
+      previewHTML = `<img src="${urlData.publicUrl}" class="preview-img" alt="${file.name}">`;
     } else if (extension === "pdf") {
-      previewHTML = `<embed src="${verUrl}" type="application/pdf" class="preview-pdf"/>`;
+      previewHTML = `<embed src="${urlData.publicUrl}" type="application/pdf" class="preview-pdf"/>`;
     } else if (["doc", "docx"].includes(extension)) {
       previewHTML = `<img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/microsoftword.svg" class="preview-icon" alt="Word">`;
     } else if (["xls", "xlsx"].includes(extension)) {
       previewHTML = `<img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/microsoftexcel.svg" class="preview-icon" alt="Excel">`;
+    } else if (["ppt", "pptx"].includes(extension)) {
+      previewHTML = `<img src="https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/microsoftpowerpoint.svg" class="preview-icon" alt="PowerPoint">`;
     } else {
       previewHTML = `<img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" class="preview-icon" alt="Archivo">`;
     }

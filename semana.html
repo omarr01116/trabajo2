@@ -46,22 +46,19 @@
   }
 
   .btn-transparent {
-  background-color: transparent;
-  border: 2px solid black;
-  color: black;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-.btn-transparent:hover {
-  background-color: black;
-  color: white;
-}
-
-</style>
-
-
+    background-color: transparent;
+    border: 2px solid black;
+    color: black;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-transparent:hover {
+    background-color: black;
+    color: white;
+  }
+  </style>
 </head>
 <body>
   <!-- Loader -->
@@ -102,6 +99,7 @@
             <h1 id="tituloSemana" class="mb-3">Trabajos</h1>
             <h2 class="mb-4">Archivos y materiales de esta semana</h2>
             <p><a href="index.html" class="btn btn-primary">⬅️ Volver a inicio</a></p>
+            <!-- 🔙 Aquí JS añadirá dinámicamente "Volver a [curso]" -->
           </div>
         </div>
       </div>
@@ -150,7 +148,7 @@
   <script src="js/magnific-popup-options.js"></script>
   <script src="js/main.js"></script>
 
-  <!-- Script dinámico -->
+  <!-- Script dinámico corregido -->
   <script type="module" src="js/semana.js"></script>
 </body>
 </html>
