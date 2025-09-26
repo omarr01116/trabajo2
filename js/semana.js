@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-// -------------------- Config Supabase --------------------
+// -------------------- Config Supabase (no tocar) --------------------
 const SUPABASE_URL = "https://bazwwhwjruwgyfomyttp.supabase.co";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhend3aHdqcnV3Z3lmb215dHRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxNjA1NTAsImV4cCI6MjA3MzczNjU1MH0.RzpCKpYV-GqNIhTklsQtRqyiPCGGmVlUs7q_BeBHxUo";
@@ -72,12 +72,13 @@ function ensureModalExists() {
   `;
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  // 🔹 Evento botón modal
-  document
-    .getElementById("volverCursoModal")
-    .addEventListener("click", () => {
+  // Evento botón modal
+  const volverModalBtn = document.getElementById("volverCursoModal");
+  if (volverModalBtn) {
+    volverModalBtn.addEventListener("click", () => {
       window.location.href = `curso.html?curso=${encodeURIComponent(curso)}`;
     });
+  }
 }
 
 // -------------------- Icon mapping --------------------
@@ -100,13 +101,13 @@ function getIconForExt(ext) {
 }
 
 // -------------------- URL para vista previa --------------------
+// Preferir Office Online viewer para archivos Office (más fiable embed)
 function getViewUrl(url, filename) {
   const ext = (filename || url).split(".").pop().toLowerCase();
   if (["pdf", "jpg", "jpeg", "png", "gif", "webp"].includes(ext)) return url;
   if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext)) {
-    return `https://docs.google.com/gview?url=${encodeURIComponent(
-      url
-    )}&embedded=true`;
+    // Office Online viewer
+    return `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
   }
   return url;
 }
@@ -168,9 +169,7 @@ async function cargarArchivos() {
     if (!urlData?.publicUrl) continue;
 
     const publicUrl = urlData.publicUrl;
-    const descargarUrl = `${publicUrl}?download=${encodeURIComponent(
-      file.name
-    )}`;
+    const descargarUrl = `${publicUrl}?download=${encodeURIComponent(file.name)}`;
     const ext = file.name.split(".").pop().toLowerCase();
     const icon = getIconForExt(ext);
 
@@ -179,6 +178,7 @@ async function cargarArchivos() {
 
     const card = document.createElement("div");
     card.className = "archivo-card";
+    // estilos inline mínimos para consistencia si no tienes CSS aplicado
     card.style.width = "220px";
     card.style.minHeight = "220px";
     card.style.margin = "12px";
@@ -212,10 +212,15 @@ async function cargarArchivos() {
     col.appendChild(card);
     listaArchivos.appendChild(col);
 
-    // Event Vista previa
-    card.querySelector(".btn-preview").addEventListener("click", () => {
-      abrirPreview(publicUrl, file.name);
-    });
+    // Event Vista previa: prevenimos default y propagation para evitar redirecciones
+    const viewBtn = card.querySelector(".btn-preview");
+    if (viewBtn) {
+      viewBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        abrirPreview(publicUrl, file.name);
+      });
+    }
   }
 }
 
@@ -228,11 +233,14 @@ function abrirPreview(fileUrl, filename) {
 
   if (!previewFrame || !downloadBtn || !modalEl) return;
 
+  // Cargar la URL apropiada (Office Online para Office files)
   previewFrame.src = getViewUrl(fileUrl, filename);
+
   downloadBtn.href = `${fileUrl}?download=${encodeURIComponent(filename)}`;
   downloadBtn.setAttribute("download", filename);
 
   if (typeof bootstrap === "undefined") {
+    // fallback: abrir nueva pestaña si bootstrap no está disponible
     window.open(previewFrame.src, "_blank", "noopener");
     return;
   }
@@ -240,6 +248,7 @@ function abrirPreview(fileUrl, filename) {
   const modal = new bootstrap.Modal(modalEl);
   modal.show();
 
+  // limpiar iframe cuando se cierre el modal
   modalEl.addEventListener(
     "hidden.bs.modal",
     () => {
