@@ -27,7 +27,21 @@ const listaArchivos =
   document.getElementById("listaArchivos") || document.getElementById("archivos");
 
 if (!listaArchivos) {
-  console.error('No se encontró el contenedor de archivos. Debes tener id="listaArchivos" o id="archivos" en tu HTML.');
+  console.error(
+    'No se encontró el contenedor de archivos. Debes tener id="listaArchivos" o id="archivos" en tu HTML.'
+  );
+}
+
+// -------------------- Botón dinámico "Volver al curso" (Hero) --------------------
+const volverCursoEl = document.getElementById("volverCurso");
+if (volverCursoEl) {
+  volverCursoEl.innerHTML = `
+    <p>
+      <a href="curso.html?curso=${encodeURIComponent(curso)}" class="btn btn-secondary">
+        ⬅️ Volver al curso ${curso}
+      </a>
+    </p>
+  `;
 }
 
 // -------------------- Crear modal si no existe --------------------
@@ -46,7 +60,7 @@ function ensureModalExists() {
           <iframe id="previewFrame" style="width:100%; height:100%; border:none;"></iframe>
         </div>
         <div class="modal-footer d-flex justify-content-between">
-          <a id="volverCurso" class="btn btn-secondary">⬅ Volver al curso</a>
+          <a id="volverCursoModal" class="btn btn-secondary">⬅ Volver al curso</a>
           <div>
             <a id="downloadBtn" class="btn btn-success" target="_blank" rel="noopener">⬇ Descargar</a>
             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
@@ -58,18 +72,12 @@ function ensureModalExists() {
   `;
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
- // 🔹 Botón dinámico "Volver al curso"
-const volverCursoEl = document.getElementById("volverCurso");
-if (volverCursoEl) {
-  volverCursoEl.innerHTML = `
-    <p>
-      <a href="portafolio.html?curso=${encodeURIComponent(curso)}" class="btn btn-secondary">
-        ⬅️ Volver al curso ${curso}
-      </a>
-    </p>
-  `;
-}
-
+  // 🔹 Evento botón modal
+  document
+    .getElementById("volverCursoModal")
+    .addEventListener("click", () => {
+      window.location.href = `curso.html?curso=${encodeURIComponent(curso)}`;
+    });
 }
 
 // -------------------- Icon mapping --------------------
@@ -96,7 +104,9 @@ function getViewUrl(url, filename) {
   const ext = (filename || url).split(".").pop().toLowerCase();
   if (["pdf", "jpg", "jpeg", "png", "gif", "webp"].includes(ext)) return url;
   if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext)) {
-    return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+    return `https://docs.google.com/gview?url=${encodeURIComponent(
+      url
+    )}&embedded=true`;
   }
   return url;
 }
@@ -104,7 +114,9 @@ function getViewUrl(url, filename) {
 // -------------------- Verificar conexión --------------------
 async function verificarConexion() {
   try {
-    const { data, error } = await supabase.storage.from("archivos").list(carpeta, { limit: 1 });
+    const { data, error } = await supabase.storage
+      .from("archivos")
+      .list(carpeta, { limit: 1 });
     if (error) {
       console.warn("Error verificando conexión Supabase:", error.message);
       return;
@@ -118,12 +130,16 @@ async function verificarConexion() {
 // -------------------- Listar archivos --------------------
 async function listarArchivos(path = carpeta) {
   try {
-    const { data, error } = await supabase.storage.from("archivos").list(path, { limit: 200 });
+    const { data, error } = await supabase.storage
+      .from("archivos")
+      .list(path, { limit: 200 });
     if (error) {
       console.error("Error listando archivos:", error.message);
       return [];
     }
-    return Array.isArray(data) ? data.filter(i => !i.metadata?.is_directory) : [];
+    return Array.isArray(data)
+      ? data.filter((i) => !i.metadata?.is_directory)
+      : [];
   } catch (err) {
     console.error("Error listarArchivos:", err);
     return [];
@@ -146,11 +162,15 @@ async function cargarArchivos() {
   }
 
   for (const file of archivos) {
-    const { data: urlData } = supabase.storage.from("archivos").getPublicUrl(`${carpeta}/${file.name}`);
+    const { data: urlData } = supabase.storage
+      .from("archivos")
+      .getPublicUrl(`${carpeta}/${file.name}`);
     if (!urlData?.publicUrl) continue;
 
     const publicUrl = urlData.publicUrl;
-    const descargarUrl = `${publicUrl}?download=${encodeURIComponent(file.name)}`;
+    const descargarUrl = `${publicUrl}?download=${encodeURIComponent(
+      file.name
+    )}`;
     const ext = file.name.split(".").pop().toLowerCase();
     const icon = getIconForExt(ext);
 
