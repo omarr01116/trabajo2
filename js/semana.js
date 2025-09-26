@@ -58,10 +58,18 @@ function ensureModalExists() {
   `;
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  // Volver al curso (redirigir al index)
-  document.getElementById("volverCurso").addEventListener("click", () => {
-    window.location.href = "index.html"; // cámbialo si tu ruta de cursos es diferente
-  });
+ // 🔹 Botón dinámico "Volver al curso"
+const volverCursoEl = document.getElementById("volverCurso");
+if (volverCursoEl) {
+  volverCursoEl.innerHTML = `
+    <p>
+      <a href="portafolio.html?curso=${encodeURIComponent(curso)}" class="btn btn-secondary">
+        ⬅️ Volver al curso ${curso}
+      </a>
+    </p>
+  `;
+}
+
 }
 
 // -------------------- Icon mapping --------------------
