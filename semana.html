@@ -31,12 +31,10 @@
       justify-content: space-between;
       box-sizing: border-box;
     }
-
     .archivo-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 12px 30px rgba(0,0,0,0.12);
     }
-
     /* Icono / miniatura dentro de la card */
     .archivo-card img {
       width: 110px;
@@ -46,39 +44,25 @@
       display: block;
       margin: 6px auto;
     }
-
-    .archivo-preview {
-      width: 100%;
-      height: 150px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
-
     .nombre-archivo {
       font-size: 13px;
       font-weight: 600;
       margin: 6px 0 10px;
       word-break: break-word;
     }
-
-    /* Botones en la card: dos botones con espacio y tamaño consistente */
-    .archivo-card .btn {
-      font-size: 13px;
-      padding: 6px 8px;
-    }
-
+    /* Botones en la card */
     .archivo-card .acciones {
       display: flex;
       gap: 8px;
       justify-content: center;
       align-items: center;
     }
-
     .archivo-card .acciones .btn {
       width: 48%;
+      font-size: 13px;
+      padding: 6px 8px;
     }
-
-    /* Responsividad: centro en pantallas pequeñas */
+    /* Responsivo */
     @media (max-width: 576px) {
       .archivo-card {
         width: 100%;
@@ -90,8 +74,7 @@
         height: 96px;
       }
     }
-
-    /* ---- Modal styling (preview) ---- */
+    /* ---- Modal ---- */
     #previewModal .modal-dialog {
       max-width: 95%;
     }
@@ -146,7 +129,10 @@
           <div class="col-md-12 animate-box" data-animate-effect="fadeIn">
             <h1 id="tituloSemana" class="mb-3">Trabajos</h1>
             <h2 class="mb-4">Archivos y materiales de esta semana</h2>
+            <!-- Botón fijo -->
             <p><a href="index.html" class="btn btn-primary">⬅️ Volver a inicio</a></p>
+            <!-- Botón dinámico generado por semana.js -->
+            <p id="volverCursoContainer"></p>
           </div>
         </div>
       </div>
@@ -164,7 +150,7 @@
       </div>
     </div>
 
-    <!-- 🔹 Lista de archivos (ID = "archivos" usado por semana.js) -->
+    <!-- 🔹 Lista de archivos -->
     <div id="fh5co-portfolio" class="fh5co-bg-section">
       <div class="container">
         <div class="row justify-content-start" id="archivos">
@@ -181,7 +167,7 @@
     </footer>
   </div>
 
-  <!-- 🔹 Modal de vista previa (IDs requeridos por JS: previewModal, previewFrame, downloadBtn) -->
+  <!-- 🔹 Modal de vista previa -->
   <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
       <div class="modal-content">
@@ -200,7 +186,7 @@
     </div>
   </div>
 
-  <!-- Scripts base: BOOTSTRAP JS debe cargarse antes de semana.js -->
+  <!-- Scripts base -->
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery.easing.1.3.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -210,7 +196,7 @@
   <script src="js/magnific-popup-options.js"></script>
   <script src="js/main.js"></script>
 
-  <!-- Script dinámico (tu semana.js debe usar id="archivos") -->
+  <!-- Script dinámico -->
   <script type="module" src="js/semana.js"></script>
 </body>
 </html>
